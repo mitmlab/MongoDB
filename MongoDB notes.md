@@ -1,0 +1,74 @@
+**16/3/26**
+
+* mongosh is used to check connection 
+* show dbs is used for checking database
+
+
+
+
+
+**23/3/26** 
+
+* **For selecting database** 
+
+|use my\_database |
+|-|
+
+
+
+* **Query to insert data into database**
+
+|db.students1.insertMany(\[{ name:"Arjun", age: 21, city: "bengaluru" }, { name: "Sneha", age: 19, city: "Delhi" }])  |
+|-|
+
+
+
+* **To display data**
+
+|db.students1.find() |
+|-|
+
+
+
+* **Query to update data**
+
+|db.students1.updateOne( { name: "Arjun" }, { $set: { email: "arjun@gmail.com" } } ) |
+|-|
+
+
+
+* **Query to update many values**
+
+|db.students1.updateMany({},{$set: { email: "student@gmail.com" }}) |
+|-|
+
+
+
+* **Query to find particular data** 
+
+|db.students1.find({ age : 21 })|db.students1.find({ name: "Arjun" })|
+|-|-|
+
+
+
+* **Query to find age greater than 20**
+
+|db.students1.find({age:{$gt:20}})|
+|-|
+
+
+
+* **Query to delete one person data** 
+
+|db.students1.deleteOne({age : 21})|
+|-|
+
+
+
+* **Query using regex to find particular city**
+
+| db.students1.find({ city: { $regex: "Delhi" } })|
+|-|
+
+
+
