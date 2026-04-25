@@ -1,0 +1,210 @@
+Module 1: MongoDB Foundations
+1a. Install MongoDB on your system (or use a pre-configured instance). Connect to the database using the MongoDB shell. Verify your connection by listing all the databases.
+Command:
+•	Mongosh
+
+•	show dbs
+
+1b. Create a new database named 'my_database'. Switch to this database and create a collection named 'students'. Insert two sample documents into the 'students' collection, each representing a student with the following fields: 'name', 'age', 'city'.
+Command:
+•	use my-database
+
+If you want to insert documents individually, we use:
+
+•	db.students.insertOne({
+name: "Rahul",
+age: 21,
+city: "Delhi"
+})
+
+•	db.students.insertOne({
+name: "Anita",
+age: 22,
+city: "Mumbai"
+})
+
+If you want to insert documents at the same time, we use:
+
+•	db.students.insertMany([
+{
+name: "Rahul",
+age: 21,
+city: "Delhi"
+},
+{
+name: "Anita",
+age: 22,
+city: "Mumbai"
+}
+])
+
+
+2a. Add a new field 'email' to the existing student documents in the 'students' collection. Update the documents to include email addresses for each student.
+Command:
+•	Adding Email to all students
+db.students.updateMany(
+{},
+{
+$set: { email: "student@example.com" }
+}
+)
+•	Setting Individual Email Addresses
+db.students.updateOne(
+  { name: "Arjun Kumar" },
+  { $set: { "email": "arjun@uni.com" } }
+)
+2b. Write a MongoDB query to retrieve all student documents with an age greater than 20. Additionally, write another query to retrieve students whose city is 'Bengaluru'. Master CRUD operations (Create, Read, Update, Delete) on MongoDB documents.
+Command:
+•	Retrieve all students older than 20 using the $gt (greater than) operator.
+db.students.find(
+  { age: { $gt: 20 } }
+)
+•	Retrieve all students whose city is exactly 'Bengaluru'.
+db.students.find({ city: "Bengaluru" })
+
+
+3a. Use the '$regex' operator to retrieve all student documents whose name starts with the letter 'A'. Then, retrieve students whose city contains the word "Delhi".
+Command:
+•	Use $regex to find all students whose name starts with the letter 'A'.
+db.students.find({
+name: { $regex: "^A" }
+})
+•	Find all students whose city contains the word 'Delhi'.
+
+db.students.find({
+city: { $regex: /Delhi/i }
+})
+
+3b. Create a new collection named 'books' and populate it with sample documents representing different books, each containing fields like 'title', 'author', and 'genre'. Write a query to retrieve all books that have the genre 'Science Fiction'.
+Command:
+•	Create a 'books' collection with fields: title, author, genre. Add sample books using insertMany().
+db.books.insertMany([
+  { title: "Dune",        author: "Frank Herbert", genre: "Science Fiction", year: 1965 },
+  { title: "Foundation",  author: "Isaac Asimov",  genre: "Science Fiction", year: 1951 },
+  { title: "1984",        author: "George Orwell", genre: "Dystopian",       year: 1949 },
+  { title: "Cosmos",      author: "Carl Sagan",    genre: "Science",         year: 1980 }
+])
+•	Retrieve only books in the 'Science Fiction' genre.
+
+db.books.find({
+  genre: "Science Fiction"
+})
+
+
+
+4a. Write an aggregation pipeline to calculate the average age of students in the 'students' collection.
+Command:
+•	Average Age of Students
+
+db.students.aggregate([
+  {
+    $group: {
+      _id: null,
+      averageAge: {
+        $avg: "$age"
+      }
+    }
+  }
+])
+
+4b. Use an aggregation pipeline to group students by city and count the number of students in each city. Then, sort the results in descending order based on the count.
+Command:
+•	Group by City & Sort by Count (Descending)
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$city",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  }
+])
+
+5a. Create an index on the 'age' field in the 'students' collection. Execute a query to retrieve students with an age greater than 25 and compare its execution time before and after creating the index.
+Command:
+•	Setup Collection:
+db.createCollection("students")
+db.students.insertMany([
+  {name:"Asha", age:22, city:"Mysuru"},
+  {name:"Ravi", age:28, city:"Bengaluru"},
+  {name:"Priya",age:31, city:"Mysuru"}
+])
+•	Query WITHOUT Index
+db.students.find(
+  { age: { $gt: 25 } }
+).explain("executionStats")
+•	Create Index on 'age'
+db.students.createIndex(
+  { age: 1 }
+)
+•	Query WITH Index
+db.students.find(
+  { age: { $gt: 25 } }
+).explain("executionStats")
+
+
+
+
+
+
+
+
+
+5b. Create a compound index on 'city' and 'age' fields. Run a query to retrieve students from 'Mysuru' who are older than 20 and analyze the improvement in performance compared to a query without an index.
+Command:
+•	Query Without Any Index
+db.students.find({
+  city: "Mysuru",
+  age: { $gt: 20 }
+}).explain("executionStats")
+•	Create Compound Index
+db.students.createIndex({
+  city: 1,
+  age: 1
+})
+•	Query With Compound Index
+db.students.find({
+  city: "Mysuru",
+  age: { $gt: 20 }
+}).explain("executionStats")
+
+
+
+6a. Define a schema for the 'students' collection, specifying data types and required fields. Add a custom validation rule to ensure that the email field is a valid email format.
+Command:
+db.createCollection("students", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name","age","email","city"],
+      properties: {
+        name: {
+          bsonType: "string",
+          description: "Required string"
+        },
+        age: {
+          bsonType: "int",
+          minimum: 1,
+          maximum: 120,
+          description: "Required integer"
+        },
+        email: {
+          bsonType: "string",
+          pattern: "^[\w.-]+@[\w.-]+\.\w{2,}$",
+          description: "Valid email required"
+        },
+        city: {
+          bsonType: "string",
+          description: "Required string"
+        }
+      }
+    }
+  },
+  validationAction: "error"
+})
+
+

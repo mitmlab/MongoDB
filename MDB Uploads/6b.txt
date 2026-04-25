@@ -1,0 +1,102 @@
+createCollection> db.students.insertOne({
+|   name: "Ravi",
+|   age: 28,
+|   email: "ravi@",   // ← invalid!
+|   city: "Bengaluru"
+| })
+Uncaught:
+MongoServerError: Document failed validation
+Additional information: {
+  failingDocumentId: ObjectId('69ec5b9bf4e9a1be5a7c2907'),
+  details: {
+    operatorName: '$jsonSchema',
+    schemaRulesNotSatisfied: [
+      {
+        operatorName: 'properties',
+        propertiesNotSatisfied: [
+          {
+            propertyName: 'email',
+            description: 'Valid email required',
+            details: [
+              {
+                operatorName: 'pattern',
+                specifiedAs: { pattern: '^[w.-]+@[w.-]+.w{2,}$' },
+                reason: 'regular expression did not match',
+                consideredValue: 'ravi@'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+createCollection> db.students.insertOne({
+|   name: "Priya",
+|   age: 31,
+|   // email missing!
+|   city: "Mysuru"
+| })
+|
+Uncaught:
+MongoServerError: Document failed validation
+Additional information: {
+  failingDocumentId: ObjectId('69ec5bd9f4e9a1be5a7c2908'),
+  details: {
+    operatorName: '$jsonSchema',
+    schemaRulesNotSatisfied: [
+      {
+        operatorName: 'required',
+        specifiedAs: { required: [ 'name', 'age', 'email', 'city' ] },
+        missingProperties: [ 'email' ]
+      }
+    ]
+  }
+}
+createCollection> db.students.insertOne({
+|   name: "Kiran",
+|   age: "twenty-five",   // ← string!
+|   email: "kiran@edu.in",
+|   city: "Hubballi"
+| })
+|
+Uncaught:
+MongoServerError: Document failed validation
+Additional information: {
+  failingDocumentId: ObjectId('69ec5bf9f4e9a1be5a7c2909'),
+  details: {
+    operatorName: '$jsonSchema',
+    schemaRulesNotSatisfied: [
+      {
+        operatorName: 'properties',
+        propertiesNotSatisfied: [
+          {
+            propertyName: 'age',
+            description: 'Required integer',
+            details: [
+              {
+                operatorName: 'bsonType',
+                specifiedAs: { bsonType: 'int' },
+                reason: 'type did not match',
+                consideredValue: 'twenty-five',
+                consideredType: 'string'
+              }
+            ]
+          },
+          {
+            propertyName: 'email',
+            description: 'Valid email required',
+            details: [
+              {
+                operatorName: 'pattern',
+                specifiedAs: { pattern: '^[w.-]+@[w.-]+.w{2,}$' },
+                reason: 'regular expression did not match',
+                consideredValue: 'kiran@edu.in'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
