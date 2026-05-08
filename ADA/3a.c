@@ -9,7 +9,7 @@ else
 return b;
 }
 
-void warshal(int p[10][10], int n)
+void floyd(int p[10][10], int n)
 {
     int i, j, k;
     for (k = 1; k <= n; k++)
@@ -42,7 +42,7 @@ void main()
         printf("\n");
     }
 
- warshal(p, n);
+ floyd(p, n);
     printf("\n Transitive closure: \n");
     for (i = 1; i <= n; i++)
 {
