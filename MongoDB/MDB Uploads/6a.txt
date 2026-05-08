@@ -1,0 +1,67 @@
+<<<<<<< HEAD
+createCollection> db.createCollection("students", {
+|   validator: {
+|     $jsonSchema: {
+|       bsonType: "object",
+|       required: ["name","age","email","city"],
+|       properties: {
+|         name: {
+|           bsonType: "string",
+|           description: "Required string"
+|         },
+|         age: {
+|           bsonType: "int",
+|           minimum: 1,
+|           maximum: 120,
+|           description: "Required integer"
+|         },
+|         email: {
+|           bsonType: "string",
+|           pattern: "^[\w.-]+@[\w.-]+\.\w{2,}$",
+|           description: "Valid email required"
+|         },
+|         city: {
+|           bsonType: "string",
+|           description: "Required string"
+|         }
+|       }
+|     }
+|   },
+|   validationAction: "error"
+| })
+|
+=======
+use new_database
+switched to db new_database
+new_database> db.createCollection("students", {
+|   validator: {
+|     $jsonSchema: {
+|       bsonType: "object",
+|       required: ["name","age","email","city"],
+|       properties: {
+|         name: {
+|           bsonType: "string",
+|           description: "Required string"
+|         },
+|         age: {
+|           bsonType: "int",
+|           minimum: 1,
+|           maximum: 120,
+|           description: "Required integer"
+|         },
+|         email: {
+|           bsonType: "string",
+|           pattern: "^[\w.-]+@[\w.-]+\.\w{2,}$",
+|           description: "Valid email required"
+|         },
+|         city: {
+|           bsonType: "string",
+|           description: "Required string"
+|         }
+|       }
+|     }
+|   },
+|   validationAction: "error"
+| })
+>>>>>>> 5e0102f79b6a7fc1ce3cb65b07dc248ed6a29da6
+{ ok: 1 }

@@ -1,0 +1,252 @@
+new_database> db.students.find ({
+| city: "Mysuru",
+| age: {$gt:20}
+| }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'new_database.students',
+    parsedQuery: {
+      '$and': [ { city: { '$eq': 'Mysuru' } }, { age: { '$gt': 20 } } ]
+    },
+    indexFilterSet: false,
+    queryHash: '53020A59',
+    planCacheShapeHash: '53020A59',
+    planCacheKey: '836691BA',
+    optimizationTimeMillis: 1,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      filter: { city: { '$eq': 'Mysuru' } },
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '(20, inf]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 1,
+    totalKeysExamined: 3,
+    totalDocsExamined: 3,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      filter: { city: { '$eq': 'Mysuru' } },
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 4,
+      advanced: 2,
+      needTime: 1,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 3,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 3,
+        executionTimeMillisEstimate: 0,
+        works: 4,
+        advanced: 3,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '(20, inf]' ] },
+        keysExamined: 3,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '099B697355196C5636B7ABEBB3588AC7A17B2238A57695563310B7DC1A1E760D',
+  command: {
+    find: 'students',
+    filter: { city: 'Mysuru', age: { '$gt': 20 } },
+    '$db': 'new_database'
+  },
+  serverInfo: {
+    host: 'mitm-aiml-034',
+    port: 27017,
+    version: '8.2.5',
+    gitVersion: 'a471a13094434666c48a1f75451f2efa49f8f5df'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+new_database> db.students.createIndex({
+| city:1,
+| age:1
+| })
+city_1_age_1
+new_database> db.students.find({
+| city: "Mysuru",
+| age: {$gt:20}
+| }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'new_database.students',
+    parsedQuery: {
+      '$and': [ { city: { '$eq': 'Mysuru' } }, { age: { '$gt': 20 } } ]
+    },
+    indexFilterSet: false,
+    queryHash: '53020A59',
+    planCacheShapeHash: '53020A59',
+    planCacheKey: '522E3338',
+    optimizationTimeMillis: 1,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { city: 1, age: 1 },
+        indexName: 'city_1_age_1',
+        isMultiKey: false,
+        multiKeyPaths: { city: [], age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { city: [ '["Mysuru", "Mysuru"]' ], age: [ '(20, inf]' ] }
+      }
+    },
+    rejectedPlans: [
+      {
+        isCached: false,
+        stage: 'FETCH',
+        filter: { city: { '$eq': 'Mysuru' } },
+        inputStage: {
+          stage: 'IXSCAN',
+          keyPattern: { age: 1 },
+          indexName: 'age_1',
+          isMultiKey: false,
+          multiKeyPaths: { age: [] },
+          isUnique: false,
+          isSparse: false,
+          isPartial: false,
+          indexVersion: 2,
+          direction: 'forward',
+          indexBounds: { age: [ '(20, inf]' ] }
+        }
+      }
+    ]
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 2,
+    totalKeysExamined: 2,
+    totalDocsExamined: 2,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 4,
+      advanced: 2,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 2,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 2,
+        executionTimeMillisEstimate: 0,
+        works: 3,
+        advanced: 2,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { city: 1, age: 1 },
+        indexName: 'city_1_age_1',
+        isMultiKey: false,
+        multiKeyPaths: { city: [], age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { city: [ '["Mysuru", "Mysuru"]' ], age: [ '(20, inf]' ] },
+        keysExamined: 2,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '099B697355196C5636B7ABEBB3588AC7A17B2238A57695563310B7DC1A1E760D',
+  command: {
+    find: 'students',
+    filter: { city: 'Mysuru', age: { '$gt': 20 } },
+    '$db': 'new_database'
+  },
+  serverInfo: {
+    host: 'mitm-aiml-034',
+    port: 27017,
+    version: '8.2.5',
+    gitVersion: 'a471a13094434666c48a1f75451f2efa49f8f5df'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}

@@ -1,0 +1,103 @@
+my-database> db.students.aggregate([ { $group: { _id: "$city", totalStudents: { $sum: 1 } } },{ $sort: { totalStudents:-1}}] )
+[
+  { _id: 'Bangalore', totalStudents: 2 },
+  { _id: 'Hyderabad', totalStudents: 2 },
+  { _id: 'Chennai', totalStudents: 1 }
+]
+my-database> db.students.updataOne( {name: "B"}, {$set: {city:"Chennai"}})
+TypeError: db.students.updataOne is not a function
+my-database> db.students.updateOne( {name: "B"}, {$set: {city:"Chennai"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my-database> db.students.aggregate([ { $group: { _id: "$city", totalStudents: { $sum: 1 } } },{ $sort: { totalSttotalStudents:-1}}] )
+[
+  { _id: 'Chennai', totalStudents: 2 },
+  { _id: 'Bangalore', totalStudents: 2 },
+  { _id: 'Hyderabad', totalStudents: 1 }
+]
+my-database>  db.students.insertMany([
+| | { name:"A", age:20,city:"Bangalore"}, { name:"B", age:22,city:"Hyderabad"},
+| { name:"C", age:21,city:"Bangalore"}])
+Uncaught:
+SyntaxError: Unexpected token (2:0)
+
+  1 |  db.students.insertMany([
+> 2 | | { name:"A", age:20,city:"Bangalore"}, { name:"B", age:22,city:"Hyderabad"},
+    | ^
+  3 | { name:"C", age:21,city:"Bangalore"}])
+  4 |
+
+my-database>  db.students.insertMany([
+|  { name:"F", age:20,city:"Bangalore"},
+|  { name:"G", age:22,city:"Hyderabad"},
+|  { name:"H", age:21,city:"Chennai"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69d35a9efee94419d97c290c'),
+    '1': ObjectId('69d35a9efee94419d97c290d'),
+    '2': ObjectId('69d35a9efee94419d97c290e')
+  }
+}
+my-database> db.students.find()
+[
+  {
+    _id: ObjectId('69d35083fee94419d97c2907'),
+    name: 'A',
+    age: 25,
+    city: 'Bangalore'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c2908'),
+    name: 'B',
+    age: 22,
+    city: 'Chennai'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c2909'),
+    name: 'C',
+    age: 27,
+    city: 'Bangalore'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c290a'),
+    name: 'D',
+    age: 28,
+    city: 'Chennai'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c290b'),
+    name: 'E',
+    age: 20,
+    city: 'Hyderabad'
+  },
+  {
+    _id: ObjectId('69d35a9efee94419d97c290c'),
+    name: 'F',
+    age: 20,
+    city: 'Bangalore'
+  },
+  {
+    _id: ObjectId('69d35a9efee94419d97c290d'),
+    name: 'G',
+    age: 22,
+    city: 'Hyderabad'
+  },
+  {
+    _id: ObjectId('69d35a9efee94419d97c290e'),
+    name: 'H',
+    age: 21,
+    city: 'Chennai'
+  }
+]
+my-database> db.students.aggregate([ { $group: { _id: "$city", totalStudents: { $sum: 1 } } },{ $sort: { totalStudents:-1}}] )
+[
+  { _id: 'Chennai', totalStudents: 3 },
+  { _id: 'Bangalore', totalStudents: 3 },
+  { _id: 'Hyderabad', totalStudents: 2 }
+]

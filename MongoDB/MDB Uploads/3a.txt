@@ -1,0 +1,37 @@
+
+//Finding names starting with letter "A"
+my_database> db.students1.find({ name: { $regex: "A" } })
+[
+  {
+    _id: ObjectId('69c0e5f2329847fa9e7c290d'),
+    name: 'Arjun',
+    age: 21,
+    city: 'bengaluru'
+  },
+  {
+    _id: ObjectId('69c0ea9a329847fa9e7c2911'),
+    name: 'Anil',
+    age: 25,
+    city: 'Mumbai',
+    email: 'anil@gmail.com'
+  },
+  {
+    _id: ObjectId('69d35010e0ad8b1f7b7c2907'),
+    name: 'Anil',
+    age: 20,
+    city: 'chennai'
+  }
+]
+
+
+//Finding people from city : 'Delhi'
+my_database> db.students1.find({ city: { $regex: "Delhi" } })
+[
+  {
+    _id: ObjectId('69c0dce0329847fa9e7c290a'),
+    name: 'Sneha',
+    age: 19,
+    city: 'Delhi',
+    email: 'student@gmail.com'
+  }
+]

@@ -1,0 +1,199 @@
+test> use new_database
+switched to db new_database
+new_database> db.createCollection("students")
+{ ok: 1 }
+new_database> db.students.insertMany([{name:"Asha", age:22, city: "Mysuru"},
+| {name:"Ravi", age: 28, city: "Bengaluru"},
+| {name:"Priya", age:31, city:"Mysuru"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69dc89abe0144609f27c2907'),
+    '1': ObjectId('69dc89abe0144609f27c2908'),
+    '2': ObjectId('69dc89abe0144609f27c2909')
+  }
+}
+new_database> db.students.find({age:{$gt:25}}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'new_database.students',
+    parsedQuery: { age: { '$gt': 25 } },
+    indexFilterSet: false,
+    queryHash: '6ADA4B96',
+    planCacheShapeHash: '6ADA4B96',
+    planCacheKey: 'E294DEDC',
+    optimizationTimeMillis: 1,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { age: { '$gt': 25 } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 3,
+    totalKeysExamined: 0,
+    totalDocsExamined: 3,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { age: { '$gt': 25 } },
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 4,
+      advanced: 2,
+      needTime: 1,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 3
+    }
+  },
+  queryShapeHash: 'D2807896BA85E0DC4DF9CFD92507A6A77B04DC53184FCA963DA55BF5D520E2B4',
+  command: {
+    find: 'students',
+    filter: { age: { '$gt': 25 } },
+    '$db': 'new_database'
+  },
+  serverInfo: {
+    host: 'mitm-aiml-034',
+    port: 27017,
+    version: '8.2.5',
+    gitVersion: 'a471a13094434666c48a1f75451f2efa49f8f5df'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+new_database> db.students.createIndex(
+| {age:1}
+| )
+age_1
+new_database> db.students.find({age:{$gt:25}}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'new_database.students',
+    parsedQuery: { age: { '$gt': 25 } },
+    indexFilterSet: false,
+    queryHash: '6ADA4B96',
+    planCacheShapeHash: '6ADA4B96',
+    planCacheKey: '22477281',
+    optimizationTimeMillis: 3,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '(25, inf]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 16,
+    totalKeysExamined: 2,
+    totalDocsExamined: 2,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 2,
+      executionTimeMillisEstimate: 14,
+      works: 3,
+      advanced: 2,
+      needTime: 0,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      docsExamined: 2,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 2,
+        executionTimeMillisEstimate: 14,
+        works: 3,
+        advanced: 2,
+        needTime: 0,
+        needYield: 0,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        keyPattern: { age: 1 },
+        indexName: 'age_1',
+        isMultiKey: false,
+        multiKeyPaths: { age: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { age: [ '(25, inf]' ] },
+        keysExamined: 2,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: 'D2807896BA85E0DC4DF9CFD92507A6A77B04DC53184FCA963DA55BF5D520E2B4',
+  command: {
+    find: 'students',
+    filter: { age: { '$gt': 25 } },
+    '$db': 'new_database'
+  },
+  serverInfo: {
+    host: 'mitm-aiml-034',
+    port: 27017,
+    version: '8.2.5',
+    gitVersion: 'a471a13094434666c48a1f75451f2efa49f8f5df'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}

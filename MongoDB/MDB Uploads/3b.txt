@@ -1,0 +1,86 @@
+my_database> db.books.insertMany([
+| { title: "Dune", author: "Frank Herbert", genre: "Science Fiction" },
+| { title: "1984", author: "George Orwell", genre: "Dystopian" },
+| { title: "Foundation", author: "Isaac Asimov", genre: "Science Fiction" },
+| { title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy" }])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69d35f69e0ad8b1f7b7c2909'),
+    '1': ObjectId('69d35f69e0ad8b1f7b7c290a'),
+    '2': ObjectId('69d35f69e0ad8b1f7b7c290b'),
+    '3': ObjectId('69d35f69e0ad8b1f7b7c290c')
+  }
+}
+my_database> db.books.find({ genre: "Science Fiction" })
+[
+  {
+    _id: ObjectId('69c0ef71e07815baed7c290c'),
+    title: 'Echoes of Tomorrow',
+    author: 'Arjun Mehta',
+    genre: 'Science Fiction'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c2909'),
+    title: 'Dune',
+    author: 'Frank Herbert',
+    genre: 'Science Fiction'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c290b'),
+    title: 'Foundation',
+    author: 'Isaac Asimov',
+    genre: 'Science Fiction'
+  }
+]
+my_database> db.books.find()
+[
+  {
+    _id: ObjectId('69c0ef71e07815baed7c290b'),
+    title: 'The Silent Forest',
+    author: 'Riya Sharma',
+    genre: 'Mystery'
+  },
+  {
+    _id: ObjectId('69c0ef71e07815baed7c290c'),
+    title: 'Echoes of Tomorrow',
+    author: 'Arjun Mehta',
+    genre: 'Science Fiction'
+  },
+  {
+    _id: ObjectId('69c0ef71e07815baed7c290d'),
+    title: 'Broken Strings',
+    author: 'Neha Verma',
+    genre: 'Drama'
+  },
+  {
+    _id: ObjectId('69c0ef71e07815baed7c290e'),
+    title: 'The Last Kingdom',
+    author: 'Vikram Rao',
+    genre: 'Historical Fiction'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c2909'),
+    title: 'Dune',
+    author: 'Frank Herbert',
+    genre: 'Science Fiction'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c290a'),
+    title: '1984',
+    author: 'George Orwell',
+    genre: 'Dystopian'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c290b'),
+    title: 'Foundation',
+    author: 'Isaac Asimov',
+    genre: 'Science Fiction'
+  },
+  {
+    _id: ObjectId('69d35f69e0ad8b1f7b7c290c'),
+    title: 'The Hobbit',
+    author: 'J.R.R. Tolkien',
+    genre: 'Fantasy'
+  }
+]

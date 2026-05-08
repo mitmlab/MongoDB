@@ -1,0 +1,17 @@
+create database company;
+use company;
+create table employee(ssn int(8), ename varchar(15), dob date, Address varchar(20));
+insert into employee values(101, 'Ram', '2012-10-12', 'Mysore');
+insert into employee values(101, 'Dam', '2012-10-13', 'Mysore');
+insert into employee values(101, 'Sam', '2012-10-14', 'Mysore');
+insert into employee values(101, 'Can', '2012-10-15', 'Mysore');
+insert into employee values(101, 'Tom', '2012-10-16', 'Mysore');
+insert into employee values(101, 'Fam', '2012-10-17', 'Mysore');
+alter table employee modify ssn varchar(7); 
+select * from employee;
+create table manager(primary key(ssn), ssn int(8), ename varchar(20), dob date, address varchar(20));
+create table manager(ssn int(8) primary key, ename varchar(20), dob date, address varchar(20));
+select * from manager;
+update employee set ename='Rama' where ename='Ram';	
+alter table manager rename column ssn to ssn1;
+alter table employee set foreign key(ssn1) references manager(ssn);

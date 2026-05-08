@@ -1,0 +1,32 @@
+use admin
+switched to db admin
+admin> db.createRole({
+|   role: "booksReadWrite",
+|   privileges: [{
+|     resource: { db: "library", collection: "books" },
+|     actions: [ "find", "insert", "update", "remove" ]
+|   }],
+|   roles: []
+| })
+|
+{ ok: 1 }
+admin> use library
+switched to db library
+library> db.createUser({
+|   user: "booksUser",
+|   pwd:  "mySecurePass",
+|   roles: [{
+|     role: "booksReadWrite",
+|     db:   "admin"
+|   }]
+| })
+{ ok: 1 }
+library> db.getUser( "booksUser" )
+{
+  _id: 'library.booksUser',
+  userId: UUID('5981d77c-89a4-44d6-b4c8-1462935dd864'),
+  user: 'booksUser',
+  db: 'library',
+  roles: [ { role: 'booksReadWrite', db: 'admin' } ],
+  mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+}

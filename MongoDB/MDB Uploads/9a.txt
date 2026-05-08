@@ -1,0 +1,24 @@
+#Program 9A
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+
+db = client["new_database"]
+
+collection = db["students"]
+
+students = collection.find()
+
+print("Students Data:\n")
+
+for student in students:
+    print(student)
+
+
+#Output
+python data.py
+Students Data:
+
+{'_id': ObjectId('69dc89abe0144609f27c2907'), 'name': 'Asha', 'age': 22, 'city': 'Mysuru'}
+{'_id': ObjectId('69dc89abe0144609f27c2908'), 'name': 'Ravi', 'age': 28, 'city': 'Bengaluru'}
+{'_id': ObjectId('69dc89abe0144609f27c2909'), 'name': 'Priya', 'age': 31, 'city': 'Mysuru'}

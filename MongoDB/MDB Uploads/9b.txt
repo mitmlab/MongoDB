@@ -1,0 +1,30 @@
+#Program 9b
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+
+db = client["new_database"]
+
+collection = db["students"]
+
+new_student = {
+    "name": "Ram",
+    "age": 28,
+    "course": "Data science"
+}
+
+insert_result = collection.insert_one(new_student)
+
+print("Inserted ID:", insert_result.inserted_id)
+
+retrieved_student = collection.find_one({"_id": insert_result.inserted_id})
+
+print("\nInserted Document:")
+print(retrieved_student)
+
+
+#Output
+Inserted ID: 69ef0fe1084b6a04b42cfeb2
+
+Inserted Document:
+{'_id': ObjectId('69ef0fe1084b6a04b42cfeb2'), 'name': 'Ram', 'age': 28, 'course': 'Data science'}

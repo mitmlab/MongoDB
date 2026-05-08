@@ -1,0 +1,104 @@
+test> use my-database
+switched to db my-database
+my-database> db.students.insertMany([
+| { name:"A", age:20,city:"Bangalore"},
+| { name:"B", age:22,city:"Hyderabad"},
+| { name:"C", age:21,city:"Bangalore"},
+| { name:"D", age:23,city:"Chennai"},
+| { name:"E", age:20,city:"Hyderabad"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69d35083fee94419d97c2907'),
+    '1': ObjectId('69d35083fee94419d97c2908'),
+    '2': ObjectId('69d35083fee94419d97c2909'),
+    '3': ObjectId('69d35083fee94419d97c290a'),
+    '4': ObjectId('69d35083fee94419d97c290b')
+  }
+}
+my-database> db.students.find()
+[
+  {
+    _id: ObjectId('69d35083fee94419d97c2907'),
+    name: 'A',
+    age: 20,
+    city: 'Bangalore'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c2908'),
+    name: 'B',
+    age: 22,
+    city: 'Hyderabad'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c2909'),
+    name: 'C',
+    age: 21,
+    city: 'Bangalore'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c290a'),
+    name: 'D',
+    age: 23,
+    city: 'Chennai'
+  },
+  {
+    _id: ObjectId('69d35083fee94419d97c290b'),
+    name: 'E',
+    age: 20,
+    city: 'Hyderabad'
+  }
+]
+my-database> db.students.aggregate([
+| {
+|   $group: {
+|    _id: null,
+|    averageAge: { &avg: "$age" }
+Uncaught:
+SyntaxError: Unexpected token (5:17)
+
+  3 |   $group: {
+  4 |    _id: null,
+> 5 |    averageAge: { &avg: "$age" }
+    |                  ^
+  6 |
+
+my-database>  db.students.aggregate([
+|  {
+|    $group: {
+|     _id: null,
+|     averageAge: { $avg: "$age" }
+| }
+| }
+| ])
+[ { _id: null, averageAge: 21.2 } ]
+my-database> db.students.updateOne( {name: "A"}, {$set: {age: 25} } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my-database> db.students.aggregate([ { $group: { _id: null, averageAge: { $avg: "$age" } } }] )
+[ { _id: null, averageAge: 22.2 } ]
+my-database> db.students.updateOne( {name: "C"}, {$set: {age: 27} } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my-database> db.students.aggregate([ { $group: { _id: null, averageAge: { $avg: "$age" } } }] )
+[ { _id: null, averageAge: 23.4 } ]
+my-database> db.students.updateOne( {name: "D"}, {$set: {age: 28} } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+my-database> db.students.aggregate([ { $group: { _id: null, averageAge: { $avg: "$age" } } }] )
+[ { _id: null, averageAge: 24.4 } ]
